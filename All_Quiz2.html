@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC Quiz Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #1a252f;
+            --success-color: #27ae60;
+            --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 30px 0;
+            border-bottom: 5px solid var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .search-box {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 20px auto 0;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .subjects-section, .quizzes-section {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+            height: fit-content;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-color);
+        }
+
+        .section-title h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .new-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .subject-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .subject-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--secondary-color);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .subject-card.active {
+            border-left-color: var(--accent-color);
+            background-color: #f9f9f9;
+        }
+
+        .subject-card.new-update::after {
+            content: "New";
+            position: absolute;
+            top: 10px;
+            right: -25px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 25px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+        }
+
+        .subject-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #e8f4fc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+
+        .subject-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .quiz-count {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .quiz-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quiz-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--secondary-color);
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-card.new {
+            border-left-color: var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-card.new::before {
+            content: "NEW";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-radius: 3px;
+        }
+
+        .quiz-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .quiz-meta {
+            display: flex;
+            gap: 15px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .quiz-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .quiz-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-start {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-start:hover {
+            background-color: #219653;
+        }
+
+        .btn-preview {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+
+        .btn-preview:hover {
+            background-color: #d5dbdb;
+        }
+
+        .no-selection {
+            text-align: center;
+            padding: 50px 20px;
+            color: #7f8c8d;
+        }
+
+        .no-selection i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .no-selection h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            color: #7f8c8d;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .search-box {
+                margin-top: 20px;
+                width: 100%;
+            }
+            
+            .subject-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .quiz-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .quiz-actions {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div>
+                        <h1>UPSC Quiz Portal</h1>
+                        <div class="tagline">Master your subjects with interactive quizzes</div>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search for a quiz or subject...">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <section class="subjects-section">
+                <div class="section-title">
+                    <h2>Subjects</h2>
+                    <div class="new-badge">Updated</div>
+                </div>
+                <div class="subject-list" id="subjectList">
+                    <!-- Subjects will be loaded here dynamically -->
+                </div>
+            </section>
+
+            <section class="quizzes-section">
+                <div class="section-title">
+                    <h2 id="quizSectionTitle">Select a Subject</h2>
+                    <div id="quizCount" class="new-badge">0 quizzes</div>
+                </div>
+                <div class="quiz-list" id="quizList">
+                    <div class="no-selection">
+                        <i class="far fa-folder-open"></i>
+                        <h3>No Subject Selected</h3>
+                        <p>Click on a subject from the left panel to view available quizzes</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalSubjects">0</div>
+                    <div class="stat-label">Subjects</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalQuizzes">0</div>
+                    <div class="stat-label">Quizzes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="newUpdates">0</div>
+                    <div class="stat-label">New Updates</div>
+                </div>
+            </div>
+            <p>© 2023 UPSC Quiz Portal. All quizzes are regularly updated.</p>
+            <p>Designed for DineshIAS96 GitHub repositories</p>
+        </div>
+    </footer>
+
+    <script>
+        // Repository data from the provided list
+        const repositories = [
+            "DineshIAS96/CA_Mag",
+            "DineshIAS96/NCERTTest",
+            "DineshIAS96/NCERTJS",
+            "DineshIAS96/RS_Sharma_Test",
+            "DineshIAS96/CA_JS",
+            "DineshIAS96/RS_Sharma_JS",
+            "DineshIAS96/Vocab",
+            "DineshIAS96/CSS",
+            "DineshIAS96/UPSCP",
+            "DineshIAS96/History",
+            "DineshIAS96/form-animation",
+            "DineshIAS96/Env_JS",
+            "DineshIAS96/Env_Test",
+            "DineshIAS96/Polity_JS",
+            "DineshIAS96/Polity_Test",
+            "DineshIAS96/UPSCP_Vear_wire_PYQ_JS"
+        ];
+
+        // Extract subjects (filter out "_JS" repositories)
+        const subjects = repositories
+            .filter(repo => !repo.includes("_JS") && !repo.includes("form-animation"))
+            .map(repo => {
+                const name = repo.split('/')[1];
+                // Convert to readable subject names
+                const subjectName = name
+                    .replace(/_/g, ' ')
+                    .replace('Test', '')
+                    .replace('CA Mag', 'Current Affairs Magazine')
+                    .replace('NCERT', 'NCERT ')
+                    .replace('RS Sharma', 'R.S. Sharma ')
+                    .replace('UPSCP', 'UPSC Prelims ')
+                    .replace('Env', 'Environment')
+                    .replace('Polity', 'Polity')
+                    .replace('Vear wire PYQ', 'Previous Year Questions')
+                    .trim();
+                
+                return {
+                    id: name,
+                    name: subjectName,
+                    repo: repo,
+                    hasNewUpdate: Math.random() > 0.7, // Randomly mark some as having new updates
+                    quizCount: Math.floor(Math.random() * 10) + 3 // Random quiz count between 3-12
+                };
+            });
+
+        // Quizzes data for each subject
+        const quizzesData = {
+            "CA_Mag": [
+                { id: 1, title: "Current Affairs - January 2023", questions: 20, duration: "30 min", isNew: true },
+                { id: 2, title: "Current Affairs - December 2022", questions: 25, duration: "35 min", isNew: false },
+                { id: 3, title: "Editorial Analysis - The Hindu", questions: 15, duration: "25 min", isNew: false },
+                { id: 4, title: "Monthly Compilation - November 2022", questions: 30, duration: "45 min", isNew: false },
+                { id: 5, title: "Special Edition - Economic Survey", questions: 20, duration: "30 min", isNew: true }
+            ],
+            "NCERTTest": [
+                { id: 1, title: "NCERT History - Class 6", questions: 15, duration: "20 min", isNew: false },
+                { id: 2, title: "NCERT Geography - Class 7", questions: 20, duration: "25 min", isNew: false },
+                { id: 3, title: "NCERT Polity - Class 8", questions: 18, duration: "22 min", isNew: false },
+                { id: 4, title: "NCERT Economics - Class 9", questions: 22, duration: "28 min", isNew: true }
+            ],
+            "RS_Sharma_Test": [
+                { id: 1, title: "Ancient India - Part 1", questions: 25, duration: "35 min", isNew: false },
+                { id: 2, title: "Ancient India - Part 2", questions: 25, duration: "35 min", isNew: false },
+                { id: 3, title: "Medieval India", questions: 30, duration: "40 min", isNew: true }
+            ],
+            "Vocab": [
+                { id: 1, title: "The Hindu Vocabulary - Week 1", questions: 20, duration: "25 min", isNew: false },
+                { id: 2, title: "The Hindu Vocabulary - Week 2", questions: 20, duration: "25 min", isNew: false },
+                { id: 3, title: "Advanced English Words", questions: 25, duration: "30 min", isNew: true }
+            ],
+            "CSS": [
+                { id: 1, title: "CSS Selectors Mastery", questions: 15, duration: "20 min", isNew: false },
+                { id: 2, title: "Flexbox and Grid", questions: 20, duration: "25 min", isNew: false }
+            ],
+            "UPSCP": [
+                { id: 1, title: "Prelims Paper 1 - General Studies", questions: 100, duration: "2 hours", isNew: false },
+                { id: 2, title: "Prelims Paper 2 - CSAT", questions: 80, duration: "2 hours", isNew: true },
+                { id: 3, title: "Previous Year - 2022", questions: 100, duration: "2 hours", isNew: false }
+            ],
+            "History": [
+                { id: 1, title: "Ancient History", questions: 30, duration: "45 min", isNew: false },
+                { id: 2, title: "Medieval History", questions: 30, duration: "45 min", isNew: false },
+                { id: 3, title: "Modern History", questions: 35, duration: "50 min", isNew: true },
+                { id: 4, title: "Art and Culture", questions: 25, duration: "35 min", isNew: false }
+            ],
+            "Env_Test": [
+                { id: 1, title: "Ecology and Ecosystems", questions: 20, duration: "30 min", isNew: false },
+                { id: 2, title: "Climate Change", questions: 25, duration: "35 min", isNew: true },
+                { id: 3, title: "Biodiversity", questions: 22, duration: "32 min", isNew: false }
+            ],
+            "Polity_Test": [
+                { id: 1, title: "Indian Constitution", questions: 30, duration: "45 min", isNew: false },
+                { id: 2, title: "Fundamental Rights", questions: 25, duration: "35 min", isNew: false },
+                { id: 3, title: "Parliament and State Legislatures", questions: 28, duration: "40 min", isNew: true },
+                { id: 4, title: "Judiciary System", questions: 22, duration: "30 min", isNew: false }
+            ],
+            "UPSCP_Vear_wire_PYQ_JS": [
+                { id: 1, title: "PYQ 2021 - Paper 1", questions: 100, duration: "2 hours", isNew: false },
+                { id: 2, title: "PYQ 2020 - Paper 1", questions: 100, duration: "2 hours", isNew: false },
+                { id: 3, title: "PYQ 2019 - Paper 1", questions: 100, duration: "2 hours", isNew: false },
+                { id: 4, title: "PYQ 2021 - Paper 2", questions: 80, duration: "2 hours", isNew: true }
+            ]
+        };
+
+        // Icons for different subjects
+        const subjectIcons = {
+            "Current Affairs": "fas fa-newspaper",
+            "NCERT": "fas fa-book-open",
+            "R.S. Sharma": "fas fa-landmark",
+            "Vocabulary": "fas fa-language",
+            "CSS": "fab fa-css3-alt",
+            "UPSC Prelims": "fas fa-file-alt",
+            "History": "fas fa-history",
+            "Environment": "fas fa-leaf",
+            "Polity": "fas fa-balance-scale",
+            "Previous Year Questions": "fas fa-calendar-check"
+        };
+
+        // DOM elements
+        const subjectListEl = document.getElementById('subjectList');
+        const quizListEl = document.getElementById('quizList');
+        const quizSectionTitleEl = document.getElementById('quizSectionTitle');
+        const quizCountEl = document.getElementById('quizCount');
+        const searchInputEl = document.getElementById('searchInput');
+        const totalSubjectsEl = document.getElementById('totalSubjects');
+        const totalQuizzesEl = document.getElementById('totalQuizzes');
+        const newUpdatesEl = document.getElementById('newUpdates');
+
+        let selectedSubjectId = null;
+        let allQuizzesCount = 0;
+        let newUpdatesCount = 0;
+
+        // Initialize the page
+        function init() {
+            renderSubjects();
+            updateStats();
+            
+            // Set default subject (first one)
+            if (subjects.length > 0) {
+                selectSubject(subjects[0].id);
+            }
+            
+            // Setup search functionality
+            searchInputEl.addEventListener('input', handleSearch);
+        }
+
+        // Render subjects list
+        function renderSubjects(filteredSubjects = subjects) {
+            subjectListEl.innerHTML = '';
+            
+            filteredSubjects.forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = `subject-card ${selectedSubjectId === subject.id ? 'active' : ''} ${subject.hasNewUpdate ? 'new-update' : ''}`;
+                subjectCard.dataset.id = subject.id;
+                
+                // Get icon for subject
+                let iconClass = "fas fa-folder";
+                for (const [key, value] of Object.entries(subjectIcons)) {
+                    if (subject.name.includes(key)) {
+                        iconClass = value;
+                        break;
+                    }
+                }
+                
+                subjectCard.innerHTML = `
+                    <div class="subject-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <h3>${subject.name}</h3>
+                    <div class="quiz-count">
+                        <i class="fas fa-question-circle"></i>
+                        ${subject.quizCount} quizzes
+                    </div>
+                `;
+                
+                subjectCard.addEventListener('click', () => selectSubject(subject.id));
+                subjectListEl.appendChild(subjectCard);
+            });
+        }
+
+        // Select a subject and show its quizzes
+        function selectSubject(subjectId) {
+            selectedSubjectId = subjectId;
+            
+            // Update active class
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.classList.remove('active');
+                if (card.dataset.id === subjectId) {
+                    card.classList.add('active');
+                }
+            });
+            
+            // Find the subject
+            const subject = subjects.find(s => s.id === subjectId);
+            if (!subject) return;
+            
+            // Update section title
+            quizSectionTitleEl.textContent = subject.name;
+            
+            // Get quizzes for this subject
+            const quizzes = quizzesData[subjectId] || [];
+            
+            // Update quiz count
+            quizCountEl.textContent = `${quizzes.length} ${quizzes.length === 1 ? 'quiz' : 'quizzes'}`;
+            
+            // Render quizzes
+            renderQuizzes(quizzes);
+        }
+
+        // Render quizzes list
+        function renderQuizzes(quizzes) {
+            quizListEl.innerHTML = '';
+            
+            if (quizzes.length === 0) {
+                quizListEl.innerHTML = `
+                    <div class="no-selection">
+                        <i class="far fa-file-alt"></i>
+                        <h3>No Quizzes Available</h3>
+                        <p>This subject doesn't have any quizzes yet. Check back soon!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            quizzes.forEach(quiz => {
+                const quizCard = document.createElement('div');
+                quizCard.className = `quiz-card ${quiz.isNew ? 'new' : ''}`;
+                
+                quizCard.innerHTML = `
+                    <div class="quiz-info">
+                        <h3>${quiz.title}</h3>
+                        <div class="quiz-meta">
+                            <span><i class="fas fa-question-circle"></i> ${quiz.questions} questions</span>
+                            <span><i class="far fa-clock"></i> ${quiz.duration}</span>
+                            ${quiz.isNew ? '<span><i class="fas fa-star"></i> Recently Added</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="quiz-actions">
+                        <button class="btn btn-preview"><i class="far fa-eye"></i> Preview</button>
+                        <button class="btn btn-start"><i class="fas fa-play-circle"></i> Start Quiz</button>
+                    </div>
+                `;
+                
+                quizListEl.appendChild(quizCard);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.btn-start').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const quizTitle = this.closest('.quiz-card').querySelector('h3').textContent;
+                    alert(`Starting quiz: ${quizTitle}`);
+                });
+            });
+            
+            document.querySelectorAll('.btn-preview').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const quizTitle = this.closest('.quiz-card').querySelector('h3').textContent;
+                    alert(`Previewing quiz: ${quizTitle}`);
+                });
+            });
+        }
+
+        // Handle search functionality
+        function handleSearch() {
+            const searchTerm = searchInputEl.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                renderSubjects();
+                return;
+            }
+            
+            const filteredSubjects = subjects.filter(subject => 
+                subject.name.toLowerCase().includes(searchTerm)
+            );
+            
+            renderSubjects(filteredSubjects);
+            
+            // If we have a filtered result, select the first one
+            if (filteredSubjects.length > 0 && selectedSubjectId) {
+                // Check if the currently selected subject is in the filtered list
+                const isSelectedInFiltered = filteredSubjects.some(s => s.id === selectedSubjectId);
+                if (!isSelectedInFiltered) {
+                    selectSubject(filteredSubjects[0].id);
+                }
+            } else if (filteredSubjects.length > 0) {
+                selectSubject(filteredSubjects[0].id);
+            } else {
+                // No results found
+                quizSectionTitleEl.textContent = "Search Results";
+                quizCountEl.textContent = "0 quizzes";
+                quizListEl.innerHTML = `
+                    <div class="no-selection">
+                        <i class="fas fa-search"></i>
+                        <h3>No Subjects Found</h3>
+                        <p>No subjects match your search term. Try a different keyword.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Update statistics in footer
+        function updateStats() {
+            totalSubjectsEl.textContent = subjects.length;
+            
+            // Calculate total quizzes
+            let totalQuizzes = 0;
+            subjects.forEach(subject => {
+                totalQuizzes += subject.quizCount;
+            });
+            totalQuizzesEl.textContent = totalQuizzes;
+            
+            // Calculate new updates
+            newUpdatesCount = subjects.filter(s => s.hasNewUpdate).length;
+            newUpdatesEl.textContent = newUpdatesCount;
+        }
+
+        // Initialize the page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
